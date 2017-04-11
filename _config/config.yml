@@ -1,0 +1,7 @@
+---
+Name: metadescriptionfallbackconfig
+---
+
+SiteTree:
+  extensions:
+    - Chrometoaster\SEO\DataExtensions\MetaDescriptionFallbackSiteTreeExtension

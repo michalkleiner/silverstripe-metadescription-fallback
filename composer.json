@@ -1,0 +1,21 @@
+{
+    "name": "chrometoaster/silverstripe-metadescription-fallback",
+    "type": "silverstripe-module",
+    "description": "A SiteTree extension providing a mechanism to populate meta description header from content fields when MetaDescription is empty",
+    "license": "BSD-3-Clause",
+    "keywords": ["silverstripe", "cms", "SEO", "meta"],
+    "homepage": "http://github.com/chrometoasters/silverstripe-metadescription-fallback",
+    "authors": [
+        {
+            "name": "Michal Kleiner",
+            "email": "michal.kleiner@chrometoaster.com"
+        }
+    ],
+    "support": {
+        "issues": "http://github.com/chrometoasters/silverstripe-metadescription-fallback/issues"
+    },
+    "require": {
+        "php": "^5.4",
+        "silverstripe/cms": "^3.2"
+    }
+}
