@@ -67,7 +67,7 @@ class MetaDescriptionFallbackExtension extends DataExtension
         if (empty($metaDescription)) {
 
             // configured fallback fields and/or methods
-            $fallbackFields = Config::inst()->get(get_class(), 'fallback_fields');
+            $fallbackFields = Config::inst()->get(static::class, 'fallback_fields');
 
             if ($fallbackFields && is_array($fallbackFields) && count($fallbackFields)) {
                 foreach ($fallbackFields as $fb) {
