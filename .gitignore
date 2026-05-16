@@ -1,0 +1,5 @@
+/vendor
+.project
+.settings
+.idea
+.DS_Store

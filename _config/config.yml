@@ -2,6 +2,6 @@
 Name: metadescriptionfallbackconfig
 ---
 
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - Chrometoaster\SEO\DataExtensions\MetaDescriptionFallbackSiteTreeExtension
+    - Chrometoaster\SEO\DataExtensions\MetaDescriptionFallbackExtension

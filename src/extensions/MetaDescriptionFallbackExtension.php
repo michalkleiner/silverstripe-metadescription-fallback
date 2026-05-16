@@ -2,13 +2,14 @@
 
 namespace Chrometoaster\SEO\DataExtensions;
 
-use Config;
-use Controller;
-use DataExtension;
-use DataObject;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\Controller;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\FieldType\DBText;
 
 /**
- * Class MetaDescriptionFallbackSiteTreeExtension
+ * Class MetaDescriptionFallbackExtension
  *
  * Provide a mechanism to define fallback fields to get relevant content
  * for meta description header.
@@ -27,7 +28,7 @@ use DataObject;
  *
  * @package Chrometoaster\SEO\DataExtensions
  */
-class MetaDescriptionFallbackSiteTreeExtension extends DataExtension
+class MetaDescriptionFallbackExtension extends DataExtension
 {
     /**
      * Fallback fields for meta description header
@@ -66,7 +67,7 @@ class MetaDescriptionFallbackSiteTreeExtension extends DataExtension
         if (empty($metaDescription)) {
 
             // configured fallback fields and/or methods
-            $fallbackFields = Config::inst()->get(get_class(), 'fallback_fields');
+            $fallbackFields = Config::inst()->get(static::class, 'fallback_fields');
 
             if ($fallbackFields && is_array($fallbackFields) && count($fallbackFields)) {
                 foreach ($fallbackFields as $fb) {
@@ -93,7 +94,11 @@ class MetaDescriptionFallbackSiteTreeExtension extends DataExtension
             }
         }
 
-        return $metaDescription;
+        // add a space to closing </p> to prevent bunching, strip all tags and replace multiple spaces with a single one
+        $metaDescription = preg_replace('/\s+/', ' ', strip_tags(trim(str_replace('</p>', '</p> ', (string) $metaDescription))));
+
+        // call ATT() on an instance of DBText
+        return DBText::create()->setValue($metaDescription)->ATT();
     }
 
 
@@ -107,12 +112,12 @@ class MetaDescriptionFallbackSiteTreeExtension extends DataExtension
         $metaDescription = $this->getGeneralMetaDescription();
 
         if (!empty($metaDescription)) {
-            $tag = sprintf('<meta name="description" content="%s" />', $metaDescription);
-            $replacePattern = '/<meta.*?name="description".*?\/>/';
+            $tag = sprintf('<meta name="description" content="%s">', $metaDescription);
+            $replacePattern = '/<meta.*?name="description".*?>/U';
 
             // replace if present, append otherwise
             if (preg_match($replacePattern, $tags)) {
-                $tags = preg_replace($replacePattern, $tag, $tags, 1);
+                $tags = preg_replace($replacePattern, preg_replace('/\$/', '\\\$', $tag), $tags, 1);
             } else {
                 $tags .= $tag;
             }
